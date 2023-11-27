@@ -46,6 +46,7 @@ const PlayerForm = (props) => {
             id="teams"
             onChange={(e) => {
               setTeam(e.target.value);
+              // if e.target.value  = null execute function from parent component to hide stats.
             }}
           >
             <option></option>
