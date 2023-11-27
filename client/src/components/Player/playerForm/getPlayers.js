@@ -1,5 +1,6 @@
 async function getPlayers({ queryKey }) {
-  const teamId = queryKey[1];
+  let teamId;
+  queryKey[1] === "" ? (teamId = 1) : (teamId = queryKey[1]);
   const API_BASE = "http://localhost:3001";
 
   const res = await fetch(`${API_BASE}/get-players`, {

@@ -15,7 +15,6 @@ const PlayerForm = (props) => {
   const playerResults = useQuery({
     queryKey: ["getPlayers", team],
     queryFn: getPlayers,
-    enabled: Boolean(team),
   });
   // Boolean team means it will only execute with a truthy value
   //returns true if team is a truthy value.
@@ -45,11 +44,15 @@ const PlayerForm = (props) => {
             name="teams"
             id="teams"
             onChange={(e) => {
-              setTeam(e.target.value);
-              // if e.target.value  = null execute function from parent component to hide stats.
+              if (e.target.value === "") {
+                props.setHideStats(false);
+                setTeam("");
+              } else {
+                props.setHideStats(true);
+                setTeam(e.target.value);
+              }
             }}
           >
-            <option></option>
             {nbaTeams.map((team) => (
               <option value={team.id} key={team.id}>
                 {team.name}
@@ -68,7 +71,7 @@ const PlayerForm = (props) => {
                 </option>
               ))
             ) : (
-              <option> Select A Team</option>
+              <option>Loading</option>
             )}
           </select>
         </label>

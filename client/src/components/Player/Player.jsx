@@ -27,8 +27,8 @@ const Player = () => {
 
   return (
     <div>
-      <PlayerForm playerHandler={playerHandler} />
-      {seasonAverages && (
+      <PlayerForm playerHandler={playerHandler} setHideStats={setHideStats} />
+      {hideStats && seasonAverages && (
         <table>
           <tbody>
             <tr>
@@ -82,7 +82,7 @@ const Player = () => {
           </tbody>
         </table>
       )}
-      {seasonAverages && (
+      {hideStats && seasonAverages && (
         <button
           onClick={() => {
             setMoreStats(true);
