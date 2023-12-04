@@ -1,6 +1,7 @@
 async function getPlayerStats({ queryKey }) {
-  const firstName = queryKey[1]["firstname"];
-  const lastName = queryKey[1]["lastname"];
+  const firstName = queryKey[1]["player"]["firstname"];
+  const lastName = queryKey[1]["player"]["lastname"];
+  const season = queryKey[1]["season"];
   const API_BASE = "http://localhost:3001";
   const res = await fetch(`${API_BASE}/get-player-stats`, {
     method: "POST",
@@ -10,6 +11,7 @@ async function getPlayerStats({ queryKey }) {
     body: JSON.stringify({
       firstName,
       lastName,
+      season,
     }),
   });
 
@@ -17,6 +19,7 @@ async function getPlayerStats({ queryKey }) {
     throw new Error("There was an error could not fetch player stats");
   }
 
+  console.log(res);
   return res.json();
 }
 

@@ -3,8 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 import getTeams from "./getTeams";
 import getPlayers from "./getPlayers";
 
+const seasons = [2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015];
+
 const PlayerForm = (props) => {
   const [team, setTeam] = useState("");
+  const [year, setYear] = useState("");
 
   // -- useQuery to fetch player data
   const results = useQuery({
@@ -35,7 +38,9 @@ const PlayerForm = (props) => {
           let formData = new FormData(e.target);
           let playerId = formData.get("players");
           let playerData = nbaPlayers.filter((player) => player.id == playerId);
-          props.playerHandler(playerData[0]);
+          let season = formData.get("season");
+          props.playerHandler({ player: playerData[0], season });
+          props.setHideStats(true);
         }}
       >
         <label htmlFor="teams">
@@ -44,13 +49,7 @@ const PlayerForm = (props) => {
             name="teams"
             id="teams"
             onChange={(e) => {
-              if (e.target.value === "") {
-                props.setHideStats(false);
-                setTeam("");
-              } else {
-                props.setHideStats(true);
-                setTeam(e.target.value);
-              }
+              setTeam(e.target.value);
             }}
           >
             {nbaTeams.map((team) => (
@@ -65,14 +64,30 @@ const PlayerForm = (props) => {
           Player
           <select name="players" id="players">
             {nbaPlayers ? (
-              nbaPlayers.map((player) => (
-                <option value={player.id} key={player.id}>
-                  {`${player.firstname} ${player.lastname}`}
+              nbaPlayers.map((playerOption) => (
+                <option value={playerOption.id} key={playerOption.id}>
+                  {`${playerOption.firstname} ${playerOption.lastname}`}
                 </option>
               ))
             ) : (
               <option>Loading</option>
             )}
+          </select>
+        </label>
+        <label htmlFor="season">
+          Season
+          <select
+            name="season"
+            id="season"
+            onChange={(e) => {
+              setYear(e.target.value);
+            }}
+          >
+            {seasons.map((season) => (
+              <option key={season} value={season}>
+                {season}
+              </option>
+            ))}
           </select>
         </label>
         <button>Submit</button>
